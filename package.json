@@ -1,0 +1,26 @@
+{
+  "name": "logger",
+  "version": "1.0.0",
+  "description": "A simple logger for all your logging  needs.",
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {},
+  "keywords": [
+    "logger",
+    "logged",
+    "log"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Destruct-Portfolio/logger"
+  },
+  "homepage": "https://github.com/Destruct-Portfolio/logger#readme",
+  "bugs": {
+    "url": "https://github.com/Destruct-Portfolio/logger/issues"
+  },
+  "author": "Destruct<destruct.space@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "winston": "^3.9.0"
+  }
+}
