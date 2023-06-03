@@ -1,5 +1,5 @@
 {
-  "name": "destruct/logger",
+  "name": "@destruct/logger",
   "version": "1.0.0",
   "description": "A simple logger for all your logging  needs.",
   "main": "./dist/index.js",
