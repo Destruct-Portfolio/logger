@@ -22,5 +22,9 @@
   "license": "MIT",
   "dependencies": {
     "winston": "^3.9.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
