@@ -149,7 +149,7 @@ export function log(
 export function logged(
   log_level: Logging.LogLevelE = Logging.LogLevelE.Info,
   log_mask: Array<string> = ["default"],
-  log_template: Logging.LogTemplateT
+  log_template?: Logging.LogTemplateT
 ) {
   return function (
     target: Logging.Loggable<object>,
