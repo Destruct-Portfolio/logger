@@ -1,12 +1,5 @@
 import { Logger } from "../components/logger.js";
-import {
-  LogFilenameT,
-  LogInfoT,
-  LogLevelE,
-  LogTemplateT,
-  Loggable,
-  LoggableT,
-} from "../types/log.js";
+import { Logging } from "../types/log.js";
 
 /**
  * A class decorator for a loosely coupled logger.
@@ -15,12 +8,16 @@ import {
  * @returns Decorated class.
  */
 export function logger(
-  filename: LogFilenameT,
-  levels: Array<LogLevelE> = [LogLevelE.Info, LogLevelE.Warn, LogLevelE.Error]
+  filename: Logging.LogFilenameT,
+  levels: Array<Logging.LogLevelE> = [
+    Logging.LogLevelE.Info,
+    Logging.LogLevelE.Warn,
+    Logging.LogLevelE.Error,
+  ]
 ) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
-      __log_info: LogInfoT;
+      __log_info: Logging.LogInfoT;
       constructor(...args: any[]) {
         super(...args);
         this.__log_info = {
@@ -46,7 +43,7 @@ export function log(
   exit_message: string | null = null
 ) {
   return function (
-    target: Loggable<object>,
+    target: Logging.Loggable<object>,
     property: string,
     descriptor: PropertyDescriptor
   ) {
@@ -57,8 +54,10 @@ export function log(
 
     descriptor.value = function () {
       const logger = new Logger(
-        `${(this as Loggable<object>).__log_info?.descriptor}.${property}`,
-        `${(this as Loggable<object>).__log_info?.filename}`
+        `${
+          (this as Logging.Loggable<object>).__log_info?.descriptor
+        }.${property}`,
+        `${(this as Logging.Loggable<object>).__log_info?.filename}`
       );
 
       if (entry_message) {
@@ -71,7 +70,7 @@ export function log(
           for (const mask of masks!) {
             if (!loggable.mask.includes(mask)) continue;
             switch (loggable.level) {
-              case LogLevelE.Critical: {
+              case Logging.LogLevelE.Critical: {
                 logger.critical(
                   loggable.template
                     .replace("<name>", loggable.property)
@@ -83,7 +82,7 @@ export function log(
                 );
                 break;
               }
-              case LogLevelE.Error: {
+              case Logging.LogLevelE.Error: {
                 logger.error(
                   loggable.template
                     .replace("<name>", loggable.property)
@@ -95,7 +94,7 @@ export function log(
                 );
                 break;
               }
-              case LogLevelE.Warn: {
+              case Logging.LogLevelE.Warn: {
                 logger.warn(
                   loggable.template
                     .replace("<name>", loggable.property)
@@ -107,7 +106,7 @@ export function log(
                 );
                 break;
               }
-              case LogLevelE.Info: {
+              case Logging.LogLevelE.Info: {
                 logger.info(
                   loggable.template
                     .replace("<name>", loggable.property)
@@ -119,7 +118,7 @@ export function log(
                 );
                 break;
               }
-              case LogLevelE.Debug: {
+              case Logging.LogLevelE.Debug: {
                 logger.warn(
                   `${loggable.property}: ${
                     Object.getOwnPropertyDescriptor(this, loggable.property)
@@ -148,19 +147,25 @@ export function log(
  * @returns A decorated property.
  */
 export function logged(
-  log_level: LogLevelE = LogLevelE.Info,
+  log_level: Logging.LogLevelE = Logging.LogLevelE.Info,
   log_mask: Array<string> = ["default"],
-  log_template: LogTemplateT
+  log_template: Logging.LogTemplateT
 ) {
-  return function (target: Loggable<object>, property: string | symbol) {
+  return function (
+    target: Logging.Loggable<object>,
+    property: string | symbol
+  ) {
     if (!log_template) {
-      if (log_level === LogLevelE.Info || log_level === LogLevelE.Debug) {
+      if (
+        log_level === Logging.LogLevelE.Info ||
+        log_level === Logging.LogLevelE.Debug
+      ) {
         log_template = "<name> : <value>";
       } else {
         log_template = "<error> : <message>";
       }
     }
-    const loggable: LoggableT = {
+    const loggable: Logging.LoggableT = {
       property: property.toString(),
       level: log_level,
       template: log_template,
